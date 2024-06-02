@@ -9,7 +9,9 @@ class ControllerList extends GetxController with StateMixin<List<String>> {
   @override
   Future<void> onReady() async {
     await loadNames();
-    change(state, status: RxStatus.empty());
+    listData.isEmpty
+        ? change(state, status: RxStatus.empty())
+        : change(state, status: RxStatus.success());
   }
 
   Future<void> incrementData(String data) async {
@@ -19,9 +21,10 @@ class ControllerList extends GetxController with StateMixin<List<String>> {
     change(state, status: RxStatus.success());
   }
 
-  void decrementData(int index) {
+  void decrementData(int index) async {
     change(state, status: RxStatus.loading());
     listData.removeAt(index);
+    await _saveNames();
     listData.isEmpty
         ? change(state, status: RxStatus.empty())
         : change(state, status: RxStatus.success());
