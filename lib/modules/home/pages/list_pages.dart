@@ -18,8 +18,11 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
       body: Stack(
+        key: const Key('stack'),
         alignment: AlignmentDirectional.center,
         children: [
           controller.obx(
@@ -55,14 +58,22 @@ class _ListPageState extends State<ListPage> {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   child: controller.listData[index].length > 2
-                                      ? Text(controller.listData[index].substring(0, 2))
-                                      : Text(controller.listData[index].substring(0, 1)),
+                                      ? Text(
+                                          controller.listData[index]
+                                              .substring(0, 2),
+                                        )
+                                      : Text(
+                                          controller.listData[index]
+                                              .substring(0, 1),
+                                        ),
                                 ),
                               ),
                               Expanded(
                                 child: Text(
                                   controller.listData[index],
-                                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
                             ],
@@ -70,7 +81,8 @@ class _ListPageState extends State<ListPage> {
                         ),
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   ),
                 ),
               ],
@@ -79,6 +91,7 @@ class _ListPageState extends State<ListPage> {
               width: MediaQuery.of(context).size.width,
               child: const Center(
                 child: Text(
+                  key: Key('text_empty_key'),
                   'Write data for save:',
                   style: TextStyle(fontSize: 16),
                 ),
@@ -109,13 +122,35 @@ class _ListPageState extends State<ListPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 20, 10),
                     child: ElevatedButton(
+                      key: const Key('button'),
                       onPressed: () {
+                        if (controllerData.text.isEmpty) {
+                          const snackBar = SnackBar(
+                            content: Text('write message'),
+                            duration: Duration(seconds: 3),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          // Get.showSnackbar(
+                          //   const GetSnackBar(
+                          //     key: ValueKey('snack_bar'),
+                          //     backgroundColor: Colors.redAccent,
+                          //     messageText: Text('write message'),
+                          //     icon: Icon(
+                          //       Icons.refresh,
+                          //       color: Colors.teal,
+                          //     ),
+                          //     duration: Duration(seconds: 3),
+                          //   ),
+                          // );
+                        }
                         if (controllerData.text.isNotEmpty) {
                           controller.incrementData(controllerData.text);
                           controllerData.text = '';
                         }
                       },
-                      child: const Center(child: Icon(Icons.add, color: Colors.teal)),
+                      child: const Center(
+                        child: Icon(Icons.add, color: Colors.teal),
+                      ),
                     ),
                   ),
                 ],
