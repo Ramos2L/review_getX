@@ -27,6 +27,7 @@ class _ListPageState extends State<ListPage> {
         children: [
           controller.obx(
             (state) => Column(
+              key: const Key('column'),
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -125,23 +126,29 @@ class _ListPageState extends State<ListPage> {
                       key: const Key('button'),
                       onPressed: () {
                         if (controllerData.text.isEmpty) {
-                          const snackBar = SnackBar(
-                            content: Text('write message'),
-                            duration: Duration(seconds: 3),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          // Get.showSnackbar(
-                          //   const GetSnackBar(
-                          //     key: ValueKey('snack_bar'),
-                          //     backgroundColor: Colors.redAccent,
-                          //     messageText: Text('write message'),
-                          //     icon: Icon(
-                          //       Icons.refresh,
-                          //       color: Colors.teal,
-                          //     ),
-                          //     duration: Duration(seconds: 3),
-                          //   ),
+                          // const snackBar = SnackBar(
+                          //   content: Text('write message'),
+                          //   duration: Duration(seconds: 3),
                           // );
+                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          var snackBar = Get.showSnackbar(
+                            const GetSnackBar(
+                              key: ValueKey('snack_bar'),
+                              backgroundColor: Colors.redAccent,
+                              ///title: 'write message',
+                              message: 'write message',
+                              ///titleText: Text('write message'),
+                              // messageText: Text(
+                              //   key: Key('text'),
+                              //   'write message',
+                              // ),
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Colors.teal,
+                              ),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
                         }
                         if (controllerData.text.isNotEmpty) {
                           controller.incrementData(controllerData.text);
@@ -160,5 +167,12 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controllerData.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 }

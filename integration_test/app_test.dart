@@ -30,6 +30,16 @@ void main() {
       expect(key, findsOneWidget);
     });
 
+    testWidgets('deve conter um botão na page list',
+            (WidgetTester tester) async {
+          app.main();
+
+          await tester.pump();
+          final key = find.byKey(const Key('text_empty_key'));
+
+          expect(key, findsOneWidget);
+        });
+
     testWidgets('deve encontrar um texto ao clicar no botao',
         (WidgetTester tester) async {
       app.main();
